@@ -8,23 +8,21 @@ const multer = require("multer");
 const uploadMiddleware = multer({ dest: 'uploads/' });
 const fs = require("fs");
 const post = require("./models/Post");
-const secret = "lkjhgftrdfdfddwerfsf";
+const secret = process.env.SECRET_PIN;
 const port = 2000;
 mongoose.set('strictQuery', false)
 const User = require("./models/User");
-const PostModel = require("./models/Post");
-const { title } = require("process");
 require("dotenv").config();
 const salt = bcrypt.genSaltSync(10);
 
 
 
 const app = express();
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(cookie_parser());
 app.use('/uploads', express.static(__dirname + "/uploads"))
-mongoose.connect("mongodb+srv://lalithkumar:lalith19180@cluster0.rmmxecx.mongodb.net/?retryWrites=true&w=majority").then( () => console.log("connected to database successfully!"))
+mongoose.connect(process.env.MONGO_URL).then( () => console.log("connected to database successfully!"))
 
 
 app.get("/", async(req, res) => {
@@ -205,11 +203,12 @@ app.get("/post", async(req, res) => {
 
 app.get("/post/:id", async(req, res) => {
     const { id } = req.params;
-    const postdoc = await post.findById(id)
+    const postdoc = await post.findById(id).populate('author');
+
     res.json(postdoc);
 
 
-
+    
 })
 
 
