@@ -18,7 +18,7 @@ const salt = bcrypt.genSaltSync(10);
 
 
 const app = express();
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(cors({ credentials: true, origin: "https://blogin-web.netlify.app" }));
 app.use(express.json());
 app.use(cookie_parser());
 app.use('/uploads', express.static(__dirname + "/uploads"))
