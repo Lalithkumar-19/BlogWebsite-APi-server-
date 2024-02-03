@@ -65,7 +65,7 @@ app.post("/login", async(req, res) => {
             jwt.sign({ username, id: UserDoc._id }, secret, {}, (err, token) => {
                 if (err) {
                     throw err;
-                    res.status(400).json('wrong password entered');
+                    res.status(400).json('wrong password ,while token evaluation');
                 } else {
                     res.status(200).cookie('token', token).json({
                         id: UserDoc._id,
